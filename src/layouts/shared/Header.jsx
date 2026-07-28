@@ -53,7 +53,7 @@ export const Header = ({ onToggleSidebar }) => {
     const nextTheme = nextDark ? 'dark' : 'light';
     updateEventDetails({
       settings: {
-        ...eventData.settings,
+        ...(eventData?.settings || {}),
         theme: nextTheme
       }
     });

@@ -8,9 +8,17 @@ import { toast } from 'sonner';
 export const SettingsPage = () => {
   const { eventData, updateEventDetails, addNotification } = useEvent();
 
-  const [theme, setTheme] = useState(eventData.settings?.theme || 'light');
-  const [confettiEnabled, setConfettiEnabled] = useState(eventData.settings?.confettiEnabled ?? true);
-  const [autoPublish, setAutoPublish] = useState(eventData.settings?.autoPublish ?? false);
+  const [theme, setTheme] = useState(eventData?.settings?.theme || 'light');
+  const [confettiEnabled, setConfettiEnabled] = useState(eventData?.settings?.confettiEnabled ?? true);
+  const [autoPublish, setAutoPublish] = useState(eventData?.settings?.autoPublish ?? false);
+
+  React.useEffect(() => {
+    if (eventData?.settings) {
+      if (eventData.settings.theme) setTheme(eventData.settings.theme);
+      if (eventData.settings.confettiEnabled !== undefined) setConfettiEnabled(eventData.settings.confettiEnabled);
+      if (eventData.settings.autoPublish !== undefined) setAutoPublish(eventData.settings.autoPublish);
+    }
+  }, [eventData]);
 
   // Dynamic live theme application on change (silent)
   const handleThemeChange = (newTheme) => {
@@ -29,7 +37,7 @@ export const SettingsPage = () => {
     setConfettiEnabled(next);
     updateEventDetails({
       settings: {
-        ...eventData.settings,
+        ...(eventData?.settings || {}),
         theme,
         confettiEnabled: next,
         autoPublish
@@ -48,7 +56,7 @@ export const SettingsPage = () => {
     setAutoPublish(next);
     updateEventDetails({
       settings: {
-        ...eventData.settings,
+        ...(eventData?.settings || {}),
         theme,
         confettiEnabled,
         autoPublish: next
@@ -76,7 +84,7 @@ export const SettingsPage = () => {
     // Mutate Event State in Context & LocalStorage
     updateEventDetails({
       settings: {
-        ...eventData.settings,
+        ...(eventData?.settings || {}),
         theme,
         confettiEnabled,
         autoPublish
