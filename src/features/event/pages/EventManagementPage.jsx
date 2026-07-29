@@ -18,7 +18,8 @@ import {
   Share2, 
   Users, 
   ExternalLink,
-  ArrowLeft
+  ArrowLeft,
+  Hash
 } from 'lucide-react';
 import { Button } from '../../../shared/components/Button';
 import { toast } from 'sonner';
@@ -45,11 +46,10 @@ export const EventManagementPage = () => {
   // Form State
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
-  const [sponsor, setSponsor] = useState('');
-  const [venue, setVenue] = useState('');
+  const [invoiceMin, setInvoiceMin] = useState(0);
+  const [invoiceMax, setInvoiceMax] = useState(999);
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
-  const [isLive, setIsLive] = useState(false);
   const [localPrizes, setLocalPrizes] = useState([]);
 
   // Invite link copied state
@@ -60,8 +60,8 @@ export const EventManagementPage = () => {
     setEditingEventId(null);
     setName('');
     setDescription('');
-    setSponsor('');
-    setVenue('Live Online Stream');
+    setInvoiceMin(0);
+    setInvoiceMax(999);
     const futureStart = new Date(Date.now() + 15 * 60000);
     const localStart = new Date(futureStart.getTime() - futureStart.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
     const futureEnd = new Date(Date.now() + 86400000 + 15 * 60000);
@@ -69,7 +69,6 @@ export const EventManagementPage = () => {
 
     setStartDate(localStart);
     setEndDate(localEnd);
-    setIsLive(false);
     setLocalPrizes([
       { rank: 1, name: 'WASHING MACHINE', image: DEFAULT_PRIZE_IMAGES.washingMachine },
       { rank: 2, name: 'MIXTURE GRINDER', image: DEFAULT_PRIZE_IMAGES.mixerGrinder },
@@ -86,40 +85,48 @@ export const EventManagementPage = () => {
     setEditingEventId(evt.id);
     setName(evt.name || '');
     setDescription(evt.description || '');
-    setSponsor(evt.sponsor || '');
-    setVenue(evt.venue || '');
+    setInvoiceMin(evt.invoiceMin !== undefined ? evt.invoiceMin : 0);
+    setInvoiceMax(evt.invoiceMax !== undefined ? evt.invoiceMax : 999);
     setStartDate(evt.startDate || '');
     setEndDate(evt.endDate || '');
-    setIsLive(evt.status === 'LIVE');
     setLocalPrizes(prizes || []);
     setViewMode('form');
   };
 
   const handleSaveForm = (e) => {
     e.preventDefault();
+
+    const minNum = Number(invoiceMin);
+    const maxNum = Number(invoiceMax);
+
+    if (isNaN(minNum) || isNaN(maxNum) || minNum < 0 || maxNum > 999 || minNum >= maxNum) {
+      toast.error('Please enter a valid invoice range (Min must be less than Max, between 0 and 999)');
+      return;
+    }
+
     const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') || 'lucky-draw-event';
 
     if (editingEventId) {
       updateEventDetails({
         name,
         description,
-        sponsor,
-        venue,
+        sponsor: 'Divine Empire Global',
+        invoiceMin: minNum,
+        invoiceMax: maxNum,
         startDate,
         endDate,
-        eventSlug: slug,
-        status: isLive ? 'LIVE' : 'UPCOMING'
+        eventSlug: slug
       });
       toast.success(`Event "${name}" updated successfully!`);
     } else {
       const created = createEvent({
         name,
         description,
-        sponsor,
-        venue,
+        sponsor: 'Divine Empire Global',
+        invoiceMin: minNum,
+        invoiceMax: maxNum,
         startDate,
         endDate,
-        status: isLive ? 'LIVE' : 'UPCOMING',
         prizes: localPrizes
       });
       toast.success(`New Event "${created.name}" created and set as Active!`);
@@ -498,36 +505,52 @@ export const EventManagementPage = () => {
                 className="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-slate-800 text-sm font-medium focus:outline-none focus:border-blue-600 focus:ring-4 focus:ring-blue-100 transition-all bg-white resize-none"
               />
             </div>
+          </div>
+
+          {/* Section 2: Invoice Number Range Configuration */}
+          <div className="space-y-4 pb-6 border-b border-slate-100">
+            <h3 className="text-sm font-black text-blue-900 uppercase tracking-wider flex items-center gap-2">
+              <Hash size={16} className="text-blue-600" /> 2. Invoice Number Range Configuration
+            </h3>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="flex flex-col gap-1.5">
-                <label className="text-xs font-bold uppercase tracking-wider text-slate-500">Sponsor Name</label>
+                <label className="text-xs font-bold uppercase tracking-wider text-slate-500">Min Invoice Number</label>
                 <input
-                  type="text"
-                  value={sponsor}
-                  onChange={(e) => setSponsor(e.target.value)}
-                  placeholder="e.g. Divine Empire Global"
+                  type="number"
+                  min="0"
+                  max="998"
+                  value={invoiceMin}
+                  onChange={(e) => setInvoiceMin(e.target.value)}
+                  placeholder="e.g. 0"
                   className="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-slate-800 text-sm font-medium focus:outline-none focus:border-blue-600 focus:ring-4 focus:ring-blue-100 transition-all bg-white"
+                  required
                 />
               </div>
 
               <div className="flex flex-col gap-1.5">
-                <label className="text-xs font-bold uppercase tracking-wider text-slate-500">Venue / Location</label>
+                <label className="text-xs font-bold uppercase tracking-wider text-slate-500">Max Invoice Number</label>
                 <input
-                  type="text"
-                  value={venue}
-                  onChange={(e) => setVenue(e.target.value)}
-                  placeholder="e.g. Live Online Stream"
+                  type="number"
+                  min="1"
+                  max="999"
+                  value={invoiceMax}
+                  onChange={(e) => setInvoiceMax(e.target.value)}
+                  placeholder="e.g. 999"
                   className="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-slate-800 text-sm font-medium focus:outline-none focus:border-blue-600 focus:ring-4 focus:ring-blue-100 transition-all bg-white"
+                  required
                 />
               </div>
             </div>
+            <p className="text-xs text-slate-500 font-medium">
+              Participants will be able to select invoice numbers between <strong className="text-blue-900">#{String(invoiceMin).padStart(3, '0')}</strong> and <strong className="text-blue-900">#{String(invoiceMax).padStart(3, '0')}</strong>.
+            </p>
           </div>
 
-          {/* Section 2: Schedule */}
+          {/* Section 3: Schedule */}
           <div className="space-y-4 pb-6 border-b border-slate-100">
             <h3 className="text-sm font-black text-blue-900 uppercase tracking-wider flex items-center gap-2">
-              <Clock size={16} className="text-blue-600" /> 2. Schedule & Live Time Range
+              <Clock size={16} className="text-blue-600" /> 3. Schedule & Live Time Range
             </h3>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -555,10 +578,10 @@ export const EventManagementPage = () => {
             </div>
           </div>
 
-          {/* Section 3: Rank Prizes */}
+          {/* Section 4: Rank Prizes */}
           <div className="space-y-4 pb-6 border-b border-slate-100">
             <h3 className="text-sm font-black text-blue-900 uppercase tracking-wider flex items-center gap-2">
-              <Gift size={16} className="text-blue-600" /> 3. Rank-wise Prize Configuration (Ranks 1 to 5)
+              <Gift size={16} className="text-blue-600" /> 4. Rank-wise Prize Configuration (Ranks 1 to 5)
             </h3>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4 pt-2">
@@ -611,27 +634,6 @@ export const EventManagementPage = () => {
                   </div>
                 </div>
               ))}
-            </div>
-          </div>
-
-          {/* Section 4: Live Status */}
-          <div className="space-y-4 pb-2">
-            <h3 className="text-sm font-black text-blue-900 uppercase tracking-wider flex items-center gap-2">
-              <Radio size={16} className="text-red-600" /> 4. Live Broadcast Status
-            </h3>
-
-            <div className="p-4 bg-slate-50 border border-slate-200 rounded-xl">
-              <label className="flex items-center gap-3 cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={isLive}
-                  onChange={(e) => setIsLive(e.target.checked)}
-                  className="w-5 h-5 accent-blue-900 rounded-md cursor-pointer"
-                />
-                <span className="text-sm font-bold text-slate-800">
-                  Set Event Status to <strong className="text-red-600 uppercase">LIVE Broadcast</strong>
-                </span>
-              </label>
             </div>
           </div>
 

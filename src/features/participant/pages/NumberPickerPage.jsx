@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../../auth/authStore';
 import { useEvent } from '../../../context/EventContext';
@@ -9,11 +9,14 @@ import { toast } from 'sonner';
 export const NumberPickerPage = () => {
   const navigate = useNavigate();
   const { user, isAuthenticated } = useAuthStore();
-  const { registerUser, currentUserTicket } = useEvent();
+  const { registerUser, currentUserTicket, eventData } = useEvent();
 
   const [selectedNumber, setSelectedNumber] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
-  const [activeRange, setActiveRange] = useState('000-099');
+
+  // Configurable min/max invoice range from event
+  const minVal = eventData?.invoiceMin !== undefined ? Number(eventData.invoiceMin) : 0;
+  const maxVal = eventData?.invoiceMax !== undefined ? Number(eventData.invoiceMax) : 999;
 
   // Guards: Redirect if not logged in or if current user ALREADY has a ticket matching their phone
   useEffect(() => {
@@ -24,22 +27,48 @@ export const NumberPickerPage = () => {
     }
   }, [isAuthenticated, user, currentUserTicket, navigate]);
 
-  const allNumbers = Array.from({ length: 1000 }, (_, i) => String(i).padStart(3, '0'));
+  const allNumbers = useMemo(() => {
+    const total = Math.max(0, maxVal - minVal + 1);
+    return Array.from({ length: total }, (_, i) => String(minVal + i).padStart(3, '0'));
+  }, [minVal, maxVal]);
 
-  const ranges = [
-    { label: '000-099', min: 0, max: 99 },
-    { label: '100-199', min: 100, max: 199 },
-    { label: '200-299', min: 200, max: 299 },
-    { label: '300-399', min: 300, max: 399 },
-    { label: '400-499', min: 400, max: 499 },
-    { label: '500-599', min: 500, max: 599 },
-    { label: '600-699', min: 600, max: 699 },
-    { label: '700-799', min: 700, max: 799 },
-    { label: '800-899', min: 800, max: 899 },
-    { label: '900-999', min: 900, max: 999 },
-  ];
+  // Dynamically compute range tabs fitting [minVal, maxVal]
+  const ranges = useMemo(() => {
+    const baseRanges = [
+      { min: 0, max: 99 },
+      { min: 100, max: 199 },
+      { min: 200, max: 299 },
+      { min: 300, max: 399 },
+      { min: 400, max: 499 },
+      { min: 500, max: 599 },
+      { min: 600, max: 699 },
+      { min: 700, max: 799 },
+      { min: 800, max: 899 },
+      { min: 900, max: 999 },
+    ];
 
-  const currentRangeObj = ranges.find(r => r.label === activeRange) || ranges[0];
+    return baseRanges
+      .filter(r => r.max >= minVal && r.min <= maxVal)
+      .map(r => {
+        const rangeMin = Math.max(r.min, minVal);
+        const rangeMax = Math.min(r.max, maxVal);
+        return {
+          label: `${String(rangeMin).padStart(3, '0')}-${String(rangeMax).padStart(3, '0')}`,
+          min: rangeMin,
+          max: rangeMax
+        };
+      });
+  }, [minVal, maxVal]);
+
+  const [activeRange, setActiveRange] = useState('');
+
+  useEffect(() => {
+    if (ranges.length > 0 && (!activeRange || !ranges.some(r => r.label === activeRange))) {
+      setActiveRange(ranges[0].label);
+    }
+  }, [ranges, activeRange]);
+
+  const currentRangeObj = ranges.find(r => r.label === activeRange) || ranges[0] || { min: minVal, max: maxVal };
 
   const visibleNumbers = allNumbers.filter(num => {
     const val = parseInt(num, 10);
@@ -64,6 +93,9 @@ export const NumberPickerPage = () => {
     }
   };
 
+  const minFormatted = String(minVal).padStart(3, '0');
+  const maxFormatted = String(maxVal).padStart(3, '0');
+
   return (
     <div className="max-w-4xl mx-auto space-y-6">
       {/* Header Info */}
@@ -71,7 +103,7 @@ export const NumberPickerPage = () => {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
             <h1 className="text-xl font-black text-blue-900 flex items-center gap-2">
-              <Hash size={24} className="text-blue-600" /> Step 2: Select Your Lucky Invoice Number (000–999)
+              <Hash size={24} className="text-blue-600" /> Step 2: Select Your Lucky Invoice Number ({minFormatted}–{maxFormatted})
             </h1>
             <p className="text-xs font-semibold text-slate-500 mt-1">
               Participant: <strong className="text-slate-800 me-2">{user?.name}</strong> ({user?.phone})
@@ -147,7 +179,7 @@ export const NumberPickerPage = () => {
         </div>
       </div>
 
-      {/* 000-999 Number Selection Grid */}
+      {/* Number Selection Grid */}
       <div className="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm">
         <div className="grid grid-cols-5 sm:grid-cols-8 md:grid-cols-10 gap-2 max-h-[460px] overflow-y-auto p-1">
           {visibleNumbers.map(num => {

@@ -52,8 +52,12 @@ export const AdminDashboardPage = () => {
   const [addPhone, setAddPhone] = useState('');
   const [addInvoiceNo, setAddInvoiceNo] = useState('');
 
+  const minVal = eventData?.invoiceMin !== undefined ? Number(eventData.invoiceMin) : 0;
+  const maxVal = eventData?.invoiceMax !== undefined ? Number(eventData.invoiceMax) : 999;
+  const totalPossible = Math.max(1, maxVal - minVal + 1);
+
   const reservedCount = registrations.length;
-  const remainingCount = 1000 - reservedCount;
+  const remainingCount = Math.max(0, totalPossible - reservedCount);
   const prizesCount = prizes.length;
 
   // Set of winning invoice numbers and winning participant IDs
@@ -235,7 +239,9 @@ export const AdminDashboardPage = () => {
         </div>
 
         <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
-          <h3 className="text-base font-bold text-blue-900 mb-4">Invoice Grid Occupancy (000 - 999)</h3>
+          <h3 className="text-base font-bold text-blue-900 mb-4">
+            Invoice Grid Occupancy ({String(minVal).padStart(3, '0')} - {String(maxVal).padStart(3, '0')})
+          </h3>
           <div className="h-60 w-full flex items-center justify-center">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
