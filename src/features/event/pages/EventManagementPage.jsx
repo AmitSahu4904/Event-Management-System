@@ -482,7 +482,7 @@ export const EventManagementPage = () => {
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                placeholder="e.g. Flipkart Lucky Draw"
+                placeholder="e.g. Divine Empire India"
                 className="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-slate-800 text-sm font-medium focus:outline-none focus:border-blue-600 focus:ring-4 focus:ring-blue-100 transition-all bg-white"
                 required
               />
