@@ -46,7 +46,7 @@ export const AdminLoginPage = () => {
       </div>
 
       {/* Right Form Section */}
-      <div className="bg-white p-8 md:p-16 flex items-center justify-center">
+      <div className="bg-white p-5 sm:p-8 md:p-16 flex items-center justify-center">
         <div className="w-full max-w-md space-y-6">
           <div>
             <h2 className="text-2xl font-black text-slate-900">Administrator Sign In</h2>

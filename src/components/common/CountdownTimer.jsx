@@ -39,36 +39,36 @@ export const CountdownTimer = ({ targetDate, startDate, size = 'small' }) => {
 
   if (size === 'large') {
     return (
-      <div className="flex items-center justify-center gap-3 sm:gap-6 py-4">
+      <div className="flex items-center justify-center gap-1.5 sm:gap-6 py-2 sm:py-4 max-w-full">
         <div className="flex flex-col items-center">
-          <div className="w-16 h-16 sm:w-24 sm:h-24 bg-gradient-to-b from-blue-900 to-slate-950 border-2 border-blue-500/40 rounded-2xl flex items-center justify-center shadow-xl shadow-blue-950/50 relative overflow-hidden">
-            <span className="font-mono text-3xl sm:text-5xl font-black text-amber-400 tracking-tighter drop-shadow-md">
+          <div className="w-13 h-13 sm:w-24 sm:h-24 bg-gradient-to-b from-blue-900 to-slate-950 border-2 border-blue-500/40 rounded-xl sm:rounded-2xl flex items-center justify-center shadow-xl shadow-blue-950/50 relative overflow-hidden">
+            <span className="font-mono text-2xl sm:text-5xl font-black text-amber-400 tracking-tighter drop-shadow-md">
               {String(timeLeft.hours).padStart(2, '0')}
             </span>
           </div>
-          <span className="text-[10px] sm:text-xs font-black uppercase text-blue-200 mt-2 tracking-widest">Hours</span>
+          <span className="text-[9px] sm:text-xs font-black uppercase text-blue-200 mt-1.5 sm:mt-2 tracking-widest">Hours</span>
         </div>
 
-        <span className="text-2xl sm:text-4xl font-black text-blue-400 animate-pulse pb-6">:</span>
+        <span className="text-xl sm:text-4xl font-black text-blue-400 animate-pulse pb-5 sm:pb-6">:</span>
 
         <div className="flex flex-col items-center">
-          <div className="w-16 h-16 sm:w-24 sm:h-24 bg-gradient-to-b from-blue-900 to-slate-950 border-2 border-blue-500/40 rounded-2xl flex items-center justify-center shadow-xl shadow-blue-950/50 relative overflow-hidden">
-            <span className="font-mono text-3xl sm:text-5xl font-black text-white tracking-tighter drop-shadow-md">
+          <div className="w-13 h-13 sm:w-24 sm:h-24 bg-gradient-to-b from-blue-900 to-slate-950 border-2 border-blue-500/40 rounded-xl sm:rounded-2xl flex items-center justify-center shadow-xl shadow-blue-950/50 relative overflow-hidden">
+            <span className="font-mono text-2xl sm:text-5xl font-black text-white tracking-tighter drop-shadow-md">
               {String(timeLeft.minutes).padStart(2, '0')}
             </span>
           </div>
-          <span className="text-[10px] sm:text-xs font-black uppercase text-blue-200 mt-2 tracking-widest">Minutes</span>
+          <span className="text-[9px] sm:text-xs font-black uppercase text-blue-200 mt-1.5 sm:mt-2 tracking-widest">Minutes</span>
         </div>
 
-        <span className="text-2xl sm:text-4xl font-black text-blue-400 animate-pulse pb-6">:</span>
+        <span className="text-xl sm:text-4xl font-black text-blue-400 animate-pulse pb-5 sm:pb-6">:</span>
 
         <div className="flex flex-col items-center">
-          <div className="w-16 h-16 sm:w-24 sm:h-24 bg-gradient-to-b from-blue-900 to-slate-950 border-2 border-amber-400/60 rounded-2xl flex items-center justify-center shadow-xl shadow-amber-400/20 relative overflow-hidden ring-4 ring-amber-400/20">
-            <span className="font-mono text-3xl sm:text-5xl font-black text-amber-400 tracking-tighter drop-shadow-md animate-pulse">
+          <div className="w-13 h-13 sm:w-24 sm:h-24 bg-gradient-to-b from-blue-900 to-slate-950 border-2 border-amber-400/60 rounded-xl sm:rounded-2xl flex items-center justify-center shadow-xl shadow-amber-400/20 relative overflow-hidden ring-2 sm:ring-4 ring-amber-400/20">
+            <span className="font-mono text-2xl sm:text-5xl font-black text-amber-400 tracking-tighter drop-shadow-md animate-pulse">
               {String(timeLeft.seconds).padStart(2, '0')}
             </span>
           </div>
-          <span className="text-[10px] sm:text-xs font-black uppercase text-amber-300 mt-2 tracking-widest">Seconds</span>
+          <span className="text-[9px] sm:text-xs font-black uppercase text-amber-300 mt-1.5 sm:mt-2 tracking-widest">Seconds</span>
         </div>
       </div>
     );

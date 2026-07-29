@@ -272,11 +272,11 @@ export const EventManagementPage = () => {
           </div>
 
           <div className="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden">
-            <div className="p-4 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
+            <div className="p-4 bg-slate-50 border-b border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
               <h2 className="text-sm font-black text-blue-900 uppercase tracking-wider">
                 {eventTab === 'LIVE' ? 'Active Live & Upcoming Events' : 'Completed Ended Events'} ({displayedEvents.length})
               </h2>
-              <span className="text-xs text-slate-500 font-semibold">
+              <span className="text-xs text-slate-500 font-semibold hidden md:inline">
                 Click <strong>Select Active</strong> to set event scope for participants & draw engine.
               </span>
             </div>
@@ -287,7 +287,7 @@ export const EventManagementPage = () => {
                   <tr className="bg-slate-100/70 border-b border-slate-200 text-[11px] font-black text-slate-500 uppercase tracking-wider">
                     <th className="py-3 px-4">Active</th>
                     <th className="py-3 px-4">Event Name & Description</th>
-                    <th className="py-3 px-4">Sponsor / Venue</th>
+                    <th className="py-3 px-4 hidden md:table-cell">Sponsor</th>
                     <th className="py-3 px-4">Dates & Time</th>
                     <th className="py-3 px-4">Status</th>
                     <th className="py-3 px-4 text-center">Actions</th>
@@ -352,9 +352,8 @@ export const EventManagementPage = () => {
                             <div className="text-[11px] text-slate-500 truncate">{evt.description || 'No description'}</div>
                           </td>
 
-                          <td className="py-3.5 px-4 whitespace-nowrap">
+                          <td className="py-3.5 px-4 whitespace-nowrap hidden md:table-cell">
                             <div className="font-bold text-slate-800">{evt.sponsor || 'No Sponsor'}</div>
-                            <div className="text-[11px] text-slate-500">{evt.venue || 'Online Stream'}</div>
                           </td>
 
                           <td className="py-3.5 px-4 whitespace-nowrap">

@@ -12,28 +12,28 @@ export const JoinLayout = () => {
 
   const handleLogout = () => {
     logout();
-    navigate(ROUTES.LANDING);
+    navigate(ROUTES.JOIN);
   };
 
   return (
     <div className="min-h-screen bg-slate-100/80 text-slate-900 flex flex-col font-sans">
       {/* Participant Top Header Bar */}
-      <header className="h-16 bg-blue-950 text-white border-b border-blue-900 px-6 flex items-center justify-between sticky top-0 z-40 shadow-sm">
-        <div className="flex items-center gap-3">
-          <div className="w-9 h-9 bg-white/10 rounded-xl flex items-center justify-center border border-white/10">
+      <header className="h-16 bg-blue-950 text-white border-b border-blue-900 px-3 sm:px-6 flex items-center justify-between sticky top-0 z-40 shadow-sm w-full">
+        <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+          <div className="w-8 h-8 sm:w-9 sm:h-9 bg-white/10 rounded-xl flex items-center justify-center border border-white/10 flex-shrink-0">
             <Sparkles size={18} className="text-amber-400 logo-sparkle" />
           </div>
-          <div className="flex flex-col leading-tight">
-            <span className="font-black text-sm tracking-wider text-white">
+          <div className="flex flex-col leading-tight min-w-0">
+            <span className="font-black text-xs sm:text-sm tracking-wider text-white truncate max-w-[140px] sm:max-w-xs">
               {eventData?.name || 'LUCKY DRAW'}
             </span>
-            <span className="text-[10px] font-bold text-blue-300 uppercase tracking-widest">
+            <span className="text-[9px] sm:text-[10px] font-bold text-blue-300 uppercase tracking-widest truncate">
               Live Participant Portal
             </span>
           </div>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
           {isAuthenticated && user && (
             <>
               {currentUserTicket?.invoiceNo && (

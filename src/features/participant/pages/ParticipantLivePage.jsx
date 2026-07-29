@@ -89,7 +89,7 @@ export const ParticipantLivePage = () => {
     <div className="w-full max-w-7xl mx-auto space-y-6">
       
       {/* 1. TOP BANNER SECTION WITH DYNAMIC TIME LIFECYCLE */}
-      <div className="bg-gradient-to-br from-blue-900 via-blue-950 to-slate-950 text-white rounded-3xl p-6 sm:p-8 shadow-xl space-y-6 border border-blue-800">
+      <div className="bg-gradient-to-br from-blue-900 via-blue-950 to-slate-950 text-white rounded-3xl p-4 sm:p-8 shadow-xl space-y-6 border border-blue-800">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-white/10">
           <div className="space-y-2">
             <div className="flex items-center gap-2">
@@ -124,14 +124,14 @@ export const ParticipantLivePage = () => {
 
           {/* Reserved Ticket Pill Card */}
           {userInvoice && (
-            <div className="bg-white/10 border border-white/15 rounded-2xl p-4 backdrop-blur-md flex items-center gap-4 flex-shrink-0">
-              <div className="w-12 h-12 rounded-xl bg-amber-400 text-blue-950 flex items-center justify-center font-black text-lg shadow-md">
-                <Ticket size={24} />
+            <div className="bg-white/10 border border-white/15 rounded-2xl p-3.5 sm:p-4 backdrop-blur-md flex items-center gap-3 sm:gap-4 flex-shrink-0 w-full sm:w-auto">
+              <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-amber-400 text-blue-950 flex items-center justify-center font-black text-lg shadow-md flex-shrink-0">
+                <Ticket size={22} />
               </div>
-              <div>
+              <div className="min-w-0">
                 <span className="text-[10px] font-black uppercase tracking-widest text-amber-300 block">YOUR RESERVED TICKET</span>
-                <span className="text-xl font-black text-white">#{userInvoice}</span>
-                <span className="text-[11px] text-blue-200 block font-medium">{user?.name}</span>
+                <span className="text-lg sm:text-xl font-black text-white">#{userInvoice}</span>
+                <span className="text-[11px] text-blue-200 block font-medium truncate">{user?.name}</span>
               </div>
             </div>
           )}
@@ -152,29 +152,23 @@ export const ParticipantLivePage = () => {
           )}
 
           {isDuringEvent && (
-            <>
-              <span className="flex items-center gap-2 text-emerald-300">
-                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
-                Event Scheduled End: {formatDateTime(end)}
-              </span>
-              <div className="flex items-center gap-2">
-                <span className="text-white">Draw Closes In:</span>
-                <CountdownTimer targetDate={end.toISOString()} />
-              </div>
-            </>
+            <span className="flex items-center gap-2 text-emerald-300">
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+              Event Scheduled End: {formatDateTime(end)}
+            </span>
           )}
 
           {isAfterEnd && (
-            <div className="w-full flex items-center justify-between text-emerald-300">
-              <span className="flex items-center gap-2"><CheckCircle2 size={18} /> Event Completed — Official Winners Announced Below</span>
-              <span className="px-3 py-1 bg-emerald-500/20 text-emerald-300 rounded-xl text-xs font-black border border-emerald-500/30">Official Results</span>
+            <div className="w-full flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 text-emerald-300">
+              <span className="flex items-center gap-2 text-xs"><CheckCircle2 size={16} className="flex-shrink-0" /> Event Completed — Official Winners Announced Below</span>
+              <span className="px-3 py-1 bg-emerald-500/20 text-emerald-300 rounded-xl text-xs font-black border border-emerald-500/30 self-start sm:self-auto">Official Results</span>
             </div>
           )}
         </div>
       </div>
 
       {/* 2. MAIN STAGE CONTENT */}
-      <div className="bg-white border-4 border-white rounded-3xl p-6 shadow-xl space-y-6 overflow-hidden">
+      <div className="bg-white border-4 border-white rounded-3xl p-4 sm:p-6 shadow-xl space-y-6 overflow-hidden">
         
         {/* Stage Display */}
         <AnimatePresence mode="wait">
@@ -188,51 +182,51 @@ export const ParticipantLivePage = () => {
           >
             {/* CENTER STAGE: Countdown during event; FlipClock & Winners after event end */}
             {!isAfterEnd ? (
-              <div className="bg-gradient-to-br from-blue-950 via-slate-900 to-blue-900 text-white rounded-3xl p-8 border-4 border-blue-800/50 shadow-2xl flex flex-col items-center text-center space-y-4">
-                <div className="inline-flex items-center gap-2 bg-amber-400/20 text-amber-300 px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest border border-amber-400/30">
-                  <Clock size={16} /> Live Draw Countdown
+              <div className="bg-gradient-to-br from-blue-950 via-slate-900 to-blue-900 text-white rounded-3xl p-3.5 sm:p-8 border-2 sm:border-4 border-blue-800/50 shadow-2xl flex flex-col items-center text-center space-y-3 sm:space-y-4">
+                <div className="inline-flex items-center gap-2 bg-amber-400/20 text-amber-300 px-3.5 sm:px-4 py-1 rounded-full text-[11px] sm:text-xs font-black uppercase tracking-widest border border-amber-400/30">
+                  <Clock size={15} /> Live Draw Countdown
                 </div>
 
-                <h3 className="text-sm sm:text-base font-extrabold text-blue-200 uppercase tracking-wider">
+                <h3 className="text-xs sm:text-base font-extrabold text-blue-200 uppercase tracking-wider">
                   {isBeforeStart ? "Official Draw Starts In" : "Official Draw Ends In"}
                 </h3>
 
                 {/* Big Animated Hero Countdown Display */}
-                <div className="py-2">
+                <div className="py-1 sm:py-2 max-w-full overflow-hidden">
                   <CountdownTimer 
                     targetDate={(isBeforeStart ? start : end).toISOString()} 
                     size="large"
                   />
                 </div>
 
-                <p className="text-xs text-slate-300 font-medium max-w-md">
+                <p className="text-[11px] sm:text-xs text-slate-300 font-medium max-w-md">
                   Winning invoice numbers and official winner names will be revealed here immediately after the event ends at <strong className="text-white">{formatDateTime(end)}</strong>.
                 </p>
               </div>
             ) : (
-              <div className="flex flex-col items-center space-y-4 bg-gradient-to-br from-blue-950 via-slate-900 to-blue-900 p-8 rounded-3xl text-white border-4 border-blue-800/50 shadow-2xl">
-                <span className="text-xs font-black uppercase text-amber-300 tracking-widest bg-amber-400/20 px-4 py-1.5 rounded-full border border-amber-400/30">
+              <div className="flex flex-col items-center space-y-4 bg-gradient-to-br from-blue-950 via-slate-900 to-blue-900 p-3.5 sm:p-8 rounded-3xl text-white border-2 sm:border-4 border-blue-800/50 shadow-2xl">
+                <span className="text-[10px] sm:text-xs font-black uppercase text-amber-300 tracking-widest bg-amber-400/20 px-3 sm:px-4 py-1.5 rounded-full border border-amber-400/30 text-center">
                   🏆 OFFICIAL WINNING INVOICE NUMBER
                 </span>
-                <div className="flex justify-center py-2">
+                <div className="flex justify-center py-2 max-w-full overflow-hidden">
                   <FlipClock number={invoiceNumber} />
                 </div>
               </div>
             )}
 
             {/* SPOTLIGHT WINNER CARD: Hidden winner name during event; Revealed after event end */}
-            <div className={`border-2 rounded-2xl p-6 flex flex-col md:flex-row items-center justify-between gap-4 shadow-xs text-center md:text-left transition-all ${
+            <div className={`border-2 rounded-2xl p-4 sm:p-6 flex flex-col md:flex-row items-center justify-between gap-4 shadow-xs text-center md:text-left transition-all ${
               isMyTicketWinner ? 'bg-emerald-50 border-emerald-300 ring-4 ring-emerald-200' : 'bg-white border-slate-200'
             }`}>
-              <div className="flex items-center gap-4">
-                <div className={`w-16 h-16 rounded-full flex items-center justify-center shadow-md flex-shrink-0 ${
+              <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-4">
+                <div className={`w-14 h-14 sm:w-16 sm:h-16 rounded-full flex items-center justify-center shadow-md flex-shrink-0 ${
                   isAfterEnd ? 'bg-gradient-to-br from-amber-200 to-amber-500 text-amber-950' : 'bg-slate-100 text-slate-400 border border-slate-200'
                 }`}>
-                  {isAfterEnd ? <Trophy size={36} /> : <Lock size={30} />}
+                  {isAfterEnd ? <Trophy size={30} /> : <Lock size={26} />}
                 </div>
 
                 <div>
-                  <div className="inline-flex items-center gap-1 text-xs font-black text-emerald-600 tracking-widest uppercase">
+                  <div className="inline-flex items-center gap-1 text-[11px] sm:text-xs font-black text-emerald-600 tracking-widest uppercase">
                     <span>★</span>
                     <span>RANK {selectedRank} WINNER</span>
                     <span>★</span>
@@ -240,8 +234,8 @@ export const ParticipantLivePage = () => {
 
                   {isAfterEnd ? (
                     <>
-                      <h2 className="text-3xl font-black text-blue-900 flex items-center gap-2">
-                        {activeWinner?.name || "Official Winner"}
+                      <h2 className="text-xl sm:text-3xl font-black text-blue-900 flex flex-wrap items-center justify-center md:justify-start gap-2">
+                        <span>{activeWinner?.name || "Official Winner"}</span>
                         {isMyTicketWinner && (
                           <span className="bg-emerald-600 text-white text-xs font-black px-3 py-1 rounded-full uppercase tracking-wider">
                             YOU WON! 🎉
@@ -249,12 +243,12 @@ export const ParticipantLivePage = () => {
                         )}
                       </h2>
                       <p className="text-xs font-bold text-slate-600 mt-1">
-                        Invoice: <strong className="text-blue-900">#{activeWinner?.invoiceNo || '---'}</strong> | Prize: <strong className="text-blue-900">{activePrize?.name || `Rank ${selectedRank}`}</strong> | Draw Time: {drawTime}
+                        Invoice: <strong className="text-blue-900">#{activeWinner?.invoiceNo || '---'}</strong> | Prize: <strong className="text-blue-900">{activePrize?.name || `Rank ${selectedRank}`}</strong>
                       </p>
                     </>
                   ) : (
                     <>
-                      <h2 className="text-2xl font-black text-slate-400">Winner Revealed At Event End</h2>
+                      <h2 className="text-lg sm:text-2xl font-black text-slate-400">Winner Revealed At Event End</h2>
                       <p className="text-xs font-bold text-slate-500 mt-1">
                         Prize: <strong className="text-slate-700">{activePrize?.name || `Rank ${selectedRank}`}</strong> | Winner names unlocked after event completion
                       </p>
@@ -264,12 +258,12 @@ export const ParticipantLivePage = () => {
               </div>
 
               {isAfterEnd && (
-                <div className="flex items-center gap-2">
-                  <div className="flex bg-slate-100 p-1 rounded-xl border border-slate-200">
+                <div className="flex items-center justify-center gap-2 w-full md:w-auto">
+                  <div className="flex flex-wrap justify-center gap-1 bg-slate-100 p-1 rounded-xl border border-slate-200">
                     {Array.from({ length: 5 }, (_, i) => i + 1).map(rank => (
                       <button
                         key={rank}
-                        className={`px-3 py-1.5 rounded-lg text-xs font-black transition-all cursor-pointer ${
+                        className={`px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-black transition-all cursor-pointer ${
                           selectedRank === rank ? 'bg-blue-900 text-white shadow-xs' : 'text-slate-600 hover:bg-slate-200'
                         }`}
                         onClick={() => setSelectedRank(rank)}

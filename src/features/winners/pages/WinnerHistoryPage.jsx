@@ -63,17 +63,17 @@ export const WinnerHistoryPage = () => {
         </div>
       </div>
 
-      <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
+      <div className="bg-white border border-slate-200 rounded-2xl p-4 sm:p-6 shadow-sm">
         <div className="overflow-x-auto border border-slate-200 rounded-xl">
           <table className="w-full text-left text-xs">
             <thead className="bg-slate-100 font-extrabold text-slate-700 uppercase">
               <tr>
-                <th className="px-4 py-3">Rank</th>
-                <th className="px-4 py-3">Prize Name</th>
-                <th className="px-4 py-3">Invoice No.</th>
-                <th className="px-4 py-3">Winner Name</th>
-                <th className="px-4 py-3">Phone Number</th>
-                <th className="px-4 py-3">Draw Time</th>
+                <th className="px-3 sm:px-4 py-3">Rank</th>
+                <th className="px-3 sm:px-4 py-3">Prize Name</th>
+                <th className="px-3 sm:px-4 py-3">Invoice No.</th>
+                <th className="px-3 sm:px-4 py-3">Winner Name</th>
+                <th className="px-3 sm:px-4 py-3 hidden sm:table-cell">Phone Number</th>
+                <th className="px-3 sm:px-4 py-3 hidden sm:table-cell">Draw Time</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100 font-medium">
@@ -84,12 +84,12 @@ export const WinnerHistoryPage = () => {
               ) : (
                 winners.map(w => (
                   <tr key={w.rank} className="bg-emerald-50/60 hover:bg-emerald-50">
-                    <td className="px-4 py-3 font-black text-emerald-800">Rank {w.rank}</td>
-                    <td className="px-4 py-3 font-bold text-slate-800">{w.prizeName || `Rank ${w.rank} Prize`}</td>
-                    <td className="px-4 py-3 font-black text-blue-900">#{w.invoiceNo}</td>
-                    <td className="px-4 py-3 font-bold text-slate-800">{w.name}</td>
-                    <td className="px-4 py-3 text-slate-600">{w.phone}</td>
-                    <td className="px-4 py-3 text-slate-500">{formatDateTime(w.drawTime)}</td>
+                    <td className="px-3 sm:px-4 py-3 font-black text-emerald-800 whitespace-nowrap">Rank {w.rank}</td>
+                    <td className="px-3 sm:px-4 py-3 font-bold text-slate-800">{w.prizeName || `Rank ${w.rank} Prize`}</td>
+                    <td className="px-3 sm:px-4 py-3 font-black text-blue-900 whitespace-nowrap">#{w.invoiceNo}</td>
+                    <td className="px-3 sm:px-4 py-3 font-bold text-slate-800">{w.name}</td>
+                    <td className="px-3 sm:px-4 py-3 text-slate-600 hidden sm:table-cell">{w.phone}</td>
+                    <td className="px-3 sm:px-4 py-3 text-slate-500 hidden sm:table-cell">{formatDateTime(w.drawTime)}</td>
                   </tr>
                 ))
               )}

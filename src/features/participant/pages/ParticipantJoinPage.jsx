@@ -72,7 +72,7 @@ export const ParticipantJoinPage = () => {
   return (
     <div className="max-w-lg mx-auto py-6 space-y-6">
       {/* Event Header Banner */}
-      <div className="bg-gradient-to-br from-blue-900 via-blue-950 to-slate-900 text-white rounded-3xl p-8 shadow-xl text-center space-y-4 border border-blue-800">
+      <div className="bg-gradient-to-br from-blue-900 via-blue-950 to-slate-900 text-white rounded-3xl p-5 sm:p-8 shadow-xl text-center space-y-4 border border-blue-800">
         <div className="w-14 h-14 bg-white/10 rounded-2xl flex items-center justify-center mx-auto backdrop-blur-md border border-white/10">
           <Sparkles size={28} className="text-amber-400 logo-sparkle" />
         </div>
@@ -135,7 +135,7 @@ export const ParticipantJoinPage = () => {
       )}
 
       {/* Participant Name + Phone Entry Card */}
-      <div className="bg-white border border-slate-200 rounded-3xl p-8 shadow-sm space-y-6">
+      <div className="bg-white border border-slate-200 rounded-3xl p-5 sm:p-8 shadow-sm space-y-6">
         <div>
           <h2 className="text-xl font-black text-blue-900 flex items-center gap-2">
             <User size={22} className="text-blue-600" /> Step 1: Join Event

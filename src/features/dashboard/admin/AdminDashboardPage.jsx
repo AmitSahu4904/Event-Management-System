@@ -128,23 +128,23 @@ export const AdminDashboardPage = () => {
   return (
     <div className="space-y-8">
       {/* 1. ACTIVE EVENT CONTEXT BANNER */}
-      <div className="bg-gradient-to-r from-blue-900 via-blue-950 to-slate-900 text-white rounded-2xl p-5 shadow-sm flex flex-col md:flex-row items-center justify-between gap-4 border border-blue-800">
-        <div className="flex items-center gap-3">
+      <div className="bg-gradient-to-r from-blue-900 via-blue-950 to-slate-900 text-white rounded-2xl p-4 sm:p-5 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border border-blue-800">
+        <div className="flex items-center gap-3 min-w-0">
           <div className="w-10 h-10 rounded-xl bg-amber-400/20 text-amber-300 flex items-center justify-center flex-shrink-0 border border-amber-400/30">
             <Layers size={20} />
           </div>
-          <div>
+          <div className="min-w-0">
             <span className="text-[10px] font-black uppercase tracking-wider text-amber-300">CURRENTLY MANAGING</span>
-            <h2 className="text-lg font-black text-white">{eventData?.name || 'Default Lucky Draw'}</h2>
-            <p className="text-xs text-slate-300 font-medium">
-              Sponsor: {eventData?.sponsor || 'Divine Empire Global'} | Venue: {eventData?.venue || 'Online Stream'}
+            <h2 className="text-base sm:text-lg font-black text-white truncate">{eventData?.name || 'Default Lucky Draw'}</h2>
+            <p className="text-xs text-slate-300 font-medium truncate">
+              Sponsor: {eventData?.sponsor || 'Divine Empire Global'}
             </p>
           </div>
         </div>
 
         <button
           type="button"
-          className="px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-xl font-bold text-xs transition-all border border-white/20 flex items-center gap-2 cursor-pointer whitespace-nowrap active:scale-95"
+          className="px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-xl font-bold text-xs transition-all border border-white/20 flex items-center gap-2 cursor-pointer whitespace-nowrap active:scale-95 self-stretch sm:self-auto justify-center"
           onClick={() => navigate(ROUTES.EVENT)}
         >
           <Calendar size={15} /> Switch / Create Event
@@ -162,39 +162,39 @@ export const AdminDashboardPage = () => {
       </div>
 
       {/* 3. KPI CARDS GRID (4 Cards) */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div className="bg-white border border-slate-200 rounded-2xl p-4 shadow-sm flex items-center gap-3">
-          <div className="w-11 h-11 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center flex-shrink-0">
-            <Users size={22} />
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
+        <div className="bg-white border border-slate-200 rounded-2xl p-3 sm:p-4 shadow-sm flex items-center gap-2.5 sm:gap-3 min-w-0">
+          <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center flex-shrink-0">
+            <Users size={20} />
           </div>
-          <div>
-            <span className="text-lg font-black text-slate-900 leading-none block">{reservedCount}</span>
-            <span className="text-[10px] font-bold text-slate-500 uppercase mt-1 block">Participants</span>
-          </div>
-        </div>
-
-        <div className="bg-white border border-slate-200 rounded-2xl p-4 shadow-sm flex items-center gap-3">
-          <div className="w-11 h-11 rounded-xl bg-cyan-50 text-cyan-600 flex items-center justify-center flex-shrink-0">
-            <Ticket size={22} />
-          </div>
-          <div>
-            <span className="text-lg font-black text-slate-900 leading-none block">{remainingCount}</span>
-            <span className="text-[10px] font-bold text-slate-500 uppercase mt-1 block">Remaining</span>
+          <div className="min-w-0">
+            <span className="text-base sm:text-lg font-black text-slate-900 leading-none block truncate">{reservedCount}</span>
+            <span className="text-[10px] font-bold text-slate-500 uppercase mt-1 block truncate">Participants</span>
           </div>
         </div>
 
-        <div className="bg-white border border-slate-200 rounded-2xl p-4 shadow-sm flex items-center gap-3">
-          <div className="w-11 h-11 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center flex-shrink-0">
-            <Gift size={22} />
+        <div className="bg-white border border-slate-200 rounded-2xl p-3 sm:p-4 shadow-sm flex items-center gap-2.5 sm:gap-3 min-w-0">
+          <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-cyan-50 text-cyan-600 flex items-center justify-center flex-shrink-0">
+            <Ticket size={20} />
           </div>
-          <div>
-            <span className="text-lg font-black text-slate-900 leading-none block">{prizesCount} Ranks</span>
-            <span className="text-[10px] font-bold text-slate-500 uppercase mt-1 block">Prizes</span>
+          <div className="min-w-0">
+            <span className="text-base sm:text-lg font-black text-slate-900 leading-none block truncate">{remainingCount}</span>
+            <span className="text-[10px] font-bold text-slate-500 uppercase mt-1 block truncate">Remaining</span>
           </div>
         </div>
 
-        <div className="bg-white border border-slate-200 rounded-2xl p-4 shadow-sm flex items-center gap-3">
-          <div className={`w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0 ${
+        <div className="bg-white border border-slate-200 rounded-2xl p-3 sm:p-4 shadow-sm flex items-center gap-2.5 sm:gap-3 min-w-0">
+          <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center flex-shrink-0">
+            <Gift size={20} />
+          </div>
+          <div className="min-w-0">
+            <span className="text-base sm:text-lg font-black text-slate-900 leading-none block truncate">{prizesCount} Ranks</span>
+            <span className="text-[10px] font-bold text-slate-500 uppercase mt-1 block truncate">Prizes</span>
+          </div>
+        </div>
+
+        <div className="bg-white border border-slate-200 rounded-2xl p-3 sm:p-4 shadow-sm flex items-center gap-2.5 sm:gap-3 min-w-0">
+          <div className={`w-10 h-10 sm:w-11 sm:h-11 rounded-xl flex items-center justify-center flex-shrink-0 ${
             currentRealtimeStatus === 'UPCOMING'
               ? 'bg-amber-50 text-amber-600'
               : currentRealtimeStatus === 'LIVE'
@@ -202,13 +202,13 @@ export const AdminDashboardPage = () => {
               : 'bg-slate-100 text-slate-700'
           }`}>
             {currentRealtimeStatus === 'UPCOMING' ? (
-              <Clock size={22} />
+              <Clock size={20} />
             ) : (
-              <BarChart2 size={22} />
+              <BarChart2 size={20} />
             )}
           </div>
-          <div>
-            <span className={`text-lg font-black leading-none block ${
+          <div className="min-w-0">
+            <span className={`text-base sm:text-lg font-black leading-none block truncate ${
               currentRealtimeStatus === 'UPCOMING'
                 ? 'text-amber-600'
                 : currentRealtimeStatus === 'LIVE'
@@ -217,7 +217,7 @@ export const AdminDashboardPage = () => {
             }`}>
               {currentRealtimeStatus}
             </span>
-            <span className="text-[10px] font-bold text-slate-500 uppercase mt-1 block">Status</span>
+            <span className="text-[10px] font-bold text-slate-500 uppercase mt-1 block truncate">Status</span>
           </div>
         </div>
       </div>
@@ -299,7 +299,7 @@ export const AdminDashboardPage = () => {
             />
           </div>
 
-          <div className="flex gap-2">
+          <div className="flex flex-wrap gap-2">
             <button className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${statusFilter === 'ALL' ? 'bg-blue-900 text-white shadow-xs' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'}`} onClick={() => setStatusFilter('ALL')}>All Participants ({registrations.length})</button>
             <button className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${statusFilter === 'WINNER' ? 'bg-blue-900 text-white shadow-xs' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'}`} onClick={() => setStatusFilter('WINNER')}>Winners ({winners.length})</button>
           </div>

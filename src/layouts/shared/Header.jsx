@@ -93,39 +93,39 @@ export const Header = ({ onToggleSidebar }) => {
   const matchedWinners = searchQuery.trim() === '' ? [] : winners.filter(w => w.name.toLowerCase().includes(searchQuery.toLowerCase()) || w.invoiceNo.includes(searchQuery));
 
   return (
-    <header className="h-16 bg-white border-b border-slate-200 px-6 flex items-center justify-between sticky top-0 z-40">
-      <div className="flex items-center gap-4">
+    <header className="h-16 bg-white border-b border-slate-200 px-3 sm:px-6 flex items-center justify-between sticky top-0 z-40 w-full">
+      <div className="flex items-center gap-2 sm:gap-4 min-w-0">
         <button 
           type="button" 
-          className="w-9 h-9 rounded-xl border border-slate-200 bg-white text-slate-600 flex items-center justify-center hover:bg-slate-50 cursor-pointer transition-all active:scale-95" 
+          className="w-9 h-9 rounded-xl border border-slate-200 bg-white text-slate-600 flex items-center justify-center hover:bg-slate-50 cursor-pointer transition-all active:scale-95 flex-shrink-0" 
           onClick={onToggleSidebar}
           title="Toggle Navigation Sidebar"
         >
           <Menu size={18} />
         </button>
 
-        <div className="flex items-center gap-2 text-xs font-semibold">
-          <span className="text-slate-400">Home</span>
-          <span className="text-slate-300">/</span>
-          <span className="text-blue-900 font-extrabold">{breadcrumb}</span>
+        <div className="flex items-center gap-1.5 sm:gap-2 text-xs font-semibold truncate">
+          <span className="text-slate-400 hidden sm:inline">Home</span>
+          <span className="text-slate-300 hidden sm:inline">/</span>
+          <span className="text-blue-900 font-extrabold truncate">{breadcrumb}</span>
         </div>
       </div>
 
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
         {/* Real Live Search Box */}
         <div className="relative hidden sm:block" ref={searchRef}>
-          <div className="flex items-center gap-2 bg-slate-100 px-3 py-1.5 rounded-xl w-64 text-xs text-slate-600 border border-slate-200/50">
-            <Search size={15} className="text-slate-400" />
+          <div className="flex items-center gap-2 bg-slate-100 px-3 py-1.5 rounded-xl w-36 sm:w-48 lg:w-64 text-xs text-slate-600 border border-slate-200/50">
+            <Search size={15} className="text-slate-400 flex-shrink-0" />
             <input 
               type="text" 
-              placeholder="Search pages, participants, invoices..." 
+              placeholder="Search pages..." 
               value={searchQuery}
               onChange={(e) => {
                 setSearchQuery(e.target.value);
                 setShowSearchResults(true);
               }}
               onFocus={() => setShowSearchResults(true)}
-              className="bg-transparent outline-none w-full text-slate-800 placeholder-slate-400"
+              className="bg-transparent outline-none w-full text-slate-800 placeholder-slate-400 truncate"
             />
           </div>
 
@@ -279,7 +279,7 @@ export const Header = ({ onToggleSidebar }) => {
             <div className="w-9 h-9 rounded-full bg-gradient-to-br from-blue-600 to-blue-950 text-white font-extrabold flex items-center justify-center text-sm shadow-xs">
               {currentUser?.name ? currentUser.name.charAt(0).toUpperCase() : 'A'}
             </div>
-            <div className="hidden md:flex flex-col text-left leading-tight">
+            <div className="hidden lg:flex flex-col text-left leading-tight">
               <span className="font-extrabold text-xs text-slate-800">{currentUser?.name || 'System Admin'}</span>
               <span className="text-[10px] font-semibold text-slate-500">{currentUser?.role === 'admin' ? 'System Admin' : 'Participant'}</span>
             </div>

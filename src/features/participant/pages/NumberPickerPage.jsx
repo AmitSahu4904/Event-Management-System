@@ -99,26 +99,26 @@ export const NumberPickerPage = () => {
   return (
     <div className="max-w-4xl mx-auto space-y-6">
       {/* Header Info */}
-      <div className="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm space-y-4">
+      <div className="bg-white border border-slate-200 rounded-3xl p-4 sm:p-6 shadow-sm space-y-4">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <h1 className="text-xl font-black text-blue-900 flex items-center gap-2">
-              <Hash size={24} className="text-blue-600" /> Step 2: Select Your Lucky Invoice Number ({minFormatted}–{maxFormatted})
+            <h1 className="text-lg sm:text-xl font-black text-blue-900 flex items-center gap-2">
+              <Hash size={22} className="text-blue-600 flex-shrink-0" /> Step 2: Select Your Lucky Invoice Number ({minFormatted}–{maxFormatted})
             </h1>
             <p className="text-xs font-semibold text-slate-500 mt-1">
               Participant: <strong className="text-slate-800 me-2">{user?.name}</strong> ({user?.phone})
             </p>
           </div>
 
-          <div className="flex items-center gap-3">
-            <div className="px-4 py-2 bg-slate-100 border border-slate-200 rounded-2xl text-xs font-bold text-slate-700 flex items-center gap-2">
+          <div className="flex items-center justify-between sm:justify-start gap-3 w-full sm:w-auto">
+            <div className="px-3 sm:px-4 py-2 bg-slate-100 border border-slate-200 rounded-2xl text-xs font-bold text-slate-700 flex items-center gap-2">
               <span>Selected:</span>
               {selectedNumber ? (
                 <span className="font-black text-blue-900 text-sm bg-blue-100 text-blue-900 px-2 py-0.5 rounded-lg border border-blue-200">
                   #{selectedNumber}
                 </span>
               ) : (
-                <span className="text-slate-400 font-normal">None Selected</span>
+                <span className="text-slate-400 font-normal">None</span>
               )}
             </div>
 
@@ -126,7 +126,7 @@ export const NumberPickerPage = () => {
               type="button"
               disabled={!selectedNumber}
               onClick={handleConfirmReservation}
-              className={`px-5 py-2.5 rounded-2xl font-black text-xs transition-all shadow-md flex items-center gap-1.5 cursor-pointer active:scale-95 ${
+              className={`px-4 sm:px-5 py-2.5 rounded-2xl font-black text-xs transition-all shadow-md flex items-center gap-1.5 cursor-pointer active:scale-95 ${
                 selectedNumber
                   ? 'bg-blue-900 hover:bg-blue-950 text-white cursor-pointer'
                   : 'bg-slate-200 text-slate-400 cursor-not-allowed shadow-none'
@@ -156,7 +156,7 @@ export const NumberPickerPage = () => {
               <button
                 key={r.label}
                 type="button"
-                className={`px-3 py-1.5 border rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                className={`px-2.5 sm:px-3 py-1.5 border rounded-xl text-xs font-bold transition-all cursor-pointer ${
                   activeRange === r.label && !searchTerm
                     ? 'bg-blue-900 text-white border-blue-900 shadow-xs'
                     : 'bg-white text-slate-600 border-slate-300 hover:bg-slate-50'
@@ -180,8 +180,8 @@ export const NumberPickerPage = () => {
       </div>
 
       {/* Number Selection Grid */}
-      <div className="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm">
-        <div className="grid grid-cols-5 sm:grid-cols-8 md:grid-cols-10 gap-2 max-h-[460px] overflow-y-auto p-1">
+      <div className="bg-white border border-slate-200 rounded-3xl p-4 sm:p-6 shadow-sm">
+        <div className="grid grid-cols-4 sm:grid-cols-8 md:grid-cols-10 gap-1.5 sm:gap-2 max-h-[460px] overflow-y-auto p-1">
           {visibleNumbers.map(num => {
             const isSelected = selectedNumber === num;
 
