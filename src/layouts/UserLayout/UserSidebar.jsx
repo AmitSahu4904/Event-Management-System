@@ -11,8 +11,9 @@ import {
   LogOut, 
   Sparkles 
 } from 'lucide-react';
-import { ROUTES } from '../../shared/constants/routes';
-import { useAuthStore } from '../../features/auth/authStore';
+import { ROUTES } from '@/shared/constants/routes';
+import { useAuthStore } from '@/features/auth/authStore';
+import { CompanyLogo } from '@/shared/components/CompanyLogo';
 
 export const UserSidebar = ({ collapsed, mobileOpen, onCloseMobile }) => {
   const navigate = useNavigate();
@@ -36,16 +37,8 @@ export const UserSidebar = ({ collapsed, mobileOpen, onCloseMobile }) => {
   return (
     <aside className={`fixed top-0 bottom-0 left-0 bg-white border-r border-slate-200 z-50 flex flex-col transition-all duration-200 shadow-sm ${collapsed ? 'w-18' : 'w-70'} ${mobileOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}`}>
       {/* Brand Header */}
-      <div className="h-16 flex items-center gap-3 px-5 border-b border-slate-100 flex-shrink-0">
-        <div className="w-9 h-9 bg-blue-900 text-white rounded-xl flex items-center justify-center flex-shrink-0 shadow-xs">
-          <Sparkles size={18} className="text-amber-400 logo-sparkle" />
-        </div>
-        {!collapsed && (
-          <div className="flex flex-col leading-tight">
-            <span className="font-extrabold text-sm text-blue-900 tracking-wider">LUCKY DRAW</span>
-            <span className="text-[10px] font-bold text-slate-500 uppercase">Participant Portal</span>
-          </div>
-        )}
+      <div className="h-16 flex items-center px-3.5 border-b border-slate-100 flex-shrink-0 overflow-hidden min-w-0">
+        <CompanyLogo size={collapsed ? 'sm' : 'md'} showText={!collapsed} />
       </div>
 
       {/* Navigation List */}

@@ -1,6 +1,6 @@
 import React from 'react';
-import { AppProviders } from './app/providers';
-import { AppRoutes } from './app/routes';
+import { AppProviders } from './providers';
+import { AppRoutes } from './routes';
 
 export function App() {
   return (

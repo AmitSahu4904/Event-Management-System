@@ -1,6 +1,6 @@
 import React from 'react';
 import { User, ShieldCheck, Tv, RefreshCw } from 'lucide-react';
-import { useEvent } from '../../context/EventContext';
+import { useEvent } from '@/context/EventContext';
 
 export const Navbar = ({ activeTab, setActiveTab }) => {
   const { eventData, resetToDefaults } = useEvent();

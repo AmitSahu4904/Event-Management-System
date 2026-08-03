@@ -1,6 +1,6 @@
 import { create } from 'zustand';
-import { participantStorage } from '../../services/participantStorage';
-import { formatInvoiceNo } from '../../utils/formatters';
+import { participantStorage } from '@/features/participants/services/participantStorage';
+import { formatInvoiceNo } from '@/shared/utils/formatters';
 
 export const useRegistrationStore = create((set, get) => ({
   participants: participantStorage.getParticipants(),

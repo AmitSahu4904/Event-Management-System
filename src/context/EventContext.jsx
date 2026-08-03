@@ -1,12 +1,12 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { useEventStore } from '../features/event/eventStore';
-import { useRegistrationStore } from '../features/registration/registrationStore';
-import { usePrizesStore } from '../features/prizes/prizesStore';
-import { useDrawStore } from '../features/draw/drawStore';
-import { participantStorage } from '../services/participantStorage';
-import { winnerStorage } from '../services/winnerStorage';
-import { eventStorage as eventStorageService } from '../services/eventStorage';
-import { parseEventDate } from '../utils/formatters';
+import { useEventStore } from '@/features/event/eventStore';
+import { useRegistrationStore } from '@/features/registration/registrationStore';
+import { usePrizesStore } from '@/features/prizes/prizesStore';
+import { useDrawStore } from '@/features/draw/drawStore';
+import { participantStorage } from '@/features/participants/services/participantStorage';
+import { winnerStorage } from '@/features/winners/services/winnerStorage';
+import { eventStorage as eventStorageService } from '@/features/event/services/eventStorage';
+import { parseEventDate } from '@/shared/utils/formatters';
 
 const EventContext = createContext();
 
@@ -97,8 +97,9 @@ export const EventProvider = ({ children }) => {
         const availableInvoices = [...distinctInvoices];
         const eventPrizes = eventStorageService.getPrizes(activeEventId);
         const autoWinners = [];
+        const totalRanks = eventPrizes && eventPrizes.length > 0 ? eventPrizes.length : 5;
 
-        for (let rank = 1; rank <= 5; rank++) {
+        for (let rank = 1; rank <= totalRanks; rank++) {
           if (availableInvoices.length === 0) break;
           const prize = eventPrizes.find(p => p.rank === rank);
           const randomIndex = Math.floor(Math.random() * availableInvoices.length);
@@ -150,9 +151,14 @@ export const EventProvider = ({ children }) => {
   };
 
   const updateEventDetails = (fields) => {
+    if (fields && Array.isArray(fields.prizes)) {
+      eventStorageService.savePrizes(activeEventId, fields.prizes);
+      setPrizes(fields.prizes);
+      usePrizesStore.setState({ prizes: fields.prizes });
+    }
     eventStorageService.saveEvent(activeEventId, fields);
     refreshEventContext(activeEventId);
-    addNotification(`Event details updated for "${eventData.name}".`);
+    addNotification(`Event details updated for "${eventData?.name || 'Event'}".`);
   };
 
   const deleteEvent = (id) => {
@@ -199,6 +205,25 @@ export const EventProvider = ({ children }) => {
     setParticipants(updated);
     useRegistrationStore.setState({ participants: updated });
     addNotification(`Invoice #${invoiceNo} released and unassigned.`);
+  };
+
+  const importBulkParticipants = (newParticipantsList, replaceMode = false) => {
+    const existing = replaceMode ? [] : (participantStorage.getParticipants(activeEventId) || []);
+    
+    // Avoid duplicate invoice entries if already present
+    const existingInvoiceNos = new Set(existing.map(p => String(p.invoiceNo || '').trim()));
+    const freshNewEntries = newParticipantsList.filter(p => !existingInvoiceNos.has(String(p.invoiceNo || '').trim()));
+    
+    // Combine existing and new participants, updating serial numbers
+    const combined = [...existing, ...freshNewEntries].map((p, idx) => ({
+      ...p,
+      sNo: String(idx + 1)
+    }));
+
+    participantStorage.saveParticipants(activeEventId, combined);
+    setParticipants(combined);
+    useRegistrationStore.setState({ participants: combined });
+    addNotification(`Appended ${freshNewEntries.length} participant records from Excel (Total: ${combined.length}).`);
   };
 
   const checkUserTicketByPhone = (phone, targetEventId) => {
@@ -257,9 +282,9 @@ export const EventProvider = ({ children }) => {
     // Get list of distinct registered invoice numbers
     const distinctInvoices = Array.from(new Set(participants.map(p => p.invoiceNo)));
     const availableInvoices = [...distinctInvoices];
-    const draftWinners = [];
+    const totalRanks = prizes && prizes.length > 0 ? prizes.length : 5;
 
-    for (let rank = 1; rank <= 5; rank++) {
+    for (let rank = 1; rank <= totalRanks; rank++) {
       if (availableInvoices.length === 0) break;
       const prize = prizes.find(p => p.rank === rank);
       const randomIndex = Math.floor(Math.random() * availableInvoices.length);
@@ -371,6 +396,7 @@ export const EventProvider = ({ children }) => {
       clearNotifications,
       registerUser,
       removeRegistration,
+      importBulkParticipants,
       checkUserTicketByPhone,
       setUserTicket,
       isInvoiceTaken,

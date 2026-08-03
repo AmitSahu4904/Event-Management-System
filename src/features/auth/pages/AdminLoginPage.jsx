@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { ShieldCheck, Lock, ArrowRight, User } from 'lucide-react';
 import { useAuthStore } from '../authStore';
-import { ROUTES } from '../../../shared/constants/routes';
+import { ROUTES } from '@/shared/constants/routes';
+import { CompanyLogo } from '@/shared/components/CompanyLogo';
 
 export const AdminLoginPage = () => {
   const navigate = useNavigate();
@@ -30,12 +31,12 @@ export const AdminLoginPage = () => {
       {/* Left Illustration Section */}
       <div className="hidden lg:flex bg-gradient-to-br from-slate-900 via-slate-950 to-blue-950 text-white p-12 flex-col justify-center items-center relative overflow-hidden">
         <div className="max-w-md space-y-6">
-          <div className="w-16 h-16 rounded-2xl bg-white/10 flex items-center justify-center backdrop-blur-md">
-            <ShieldCheck size={36} className="text-blue-400" />
+          <div className="bg-white/90 p-4 rounded-3xl shadow-xl backdrop-blur-md inline-block">
+            <CompanyLogo size="xl" />
           </div>
           <div>
-            <h2 className="text-4xl font-black tracking-wide">ADMIN CONSOLE</h2>
-            <p className="text-sm font-semibold opacity-70 mt-1 uppercase tracking-wider">Lucky Draw Management System</p>
+            <h2 className="text-3xl font-black tracking-wide text-white">ADMIN CONSOLE</h2>
+            <p className="text-xs font-bold text-lime-400 mt-1 uppercase tracking-widest">Divine Empire Event System</p>
           </div>
           <div className="space-y-3 pt-4 border-t border-white/10 text-sm font-medium text-slate-200">
             <div className="flex items-center gap-2"><span className="text-blue-400 font-bold">✓</span> Event & Timing Management</div>

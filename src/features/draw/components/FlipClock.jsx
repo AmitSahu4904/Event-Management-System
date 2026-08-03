@@ -1,5 +1,5 @@
 import React from 'react';
-import { formatInvoiceNo } from '../../utils/formatters';
+import { formatInvoiceNo } from '@/shared/utils/formatters';
 
 export const FlipClock = ({ number, value }) => {
   const displayVal = number || value || "987";

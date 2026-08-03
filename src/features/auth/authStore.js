@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { storageAdapter, sessionStorageAdapter } from '../../services/storageAdapter';
+import { storageAdapter, sessionStorageAdapter } from '@/shared/utils/storageAdapter';
 
 const ADMIN_AUTH_KEY = 'dei_v3_admin_session';
 const PARTICIPANT_AUTH_KEY = 'dei_v3_participant_session';

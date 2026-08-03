@@ -1,6 +1,6 @@
 import { create } from 'zustand';
-import { winnerStorage } from '../../services/winnerStorage';
-import { drawSequentialWinners, redrawSingleRank } from '../../utils/drawAlgorithm';
+import { winnerStorage } from '@/features/winners/services/winnerStorage';
+import { drawSequentialWinners, redrawSingleRank } from '@/features/draw/utils/drawAlgorithm';
 import { useRegistrationStore } from '../registration/registrationStore';
 import { usePrizesStore } from '../prizes/prizesStore';
 

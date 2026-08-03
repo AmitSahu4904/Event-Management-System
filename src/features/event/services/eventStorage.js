@@ -1,5 +1,5 @@
-import { storageAdapter } from './storageAdapter';
-import { INITIAL_PRIZES } from '../data/dummyData';
+import { storageAdapter } from '@/shared/utils/storageAdapter';
+import { INITIAL_PRIZES } from '@/data/dummyData';
 
 const KEYS = {
   EVENTS_LIST: 'dei_v3_events_list',
@@ -69,6 +69,10 @@ export const eventStorage = {
     const updated = { ...existing, ...eventData, id: targetId };
     storageAdapter.set(`${KEYS.EVENT_PREFIX}${targetId}`, updated);
 
+    if (eventData && Array.isArray(eventData.prizes)) {
+      eventStorage.savePrizes(targetId, eventData.prizes);
+    }
+
     // Update summary entry in events list
     const list = eventStorage.getAllEvents();
     const updatedList = list.map(e => (e.id === targetId ? updated : e));
@@ -106,6 +110,8 @@ export const eventStorage = {
       invoiceMax: newEventData.invoiceMax !== undefined ? Number(newEventData.invoiceMax) : 999,
       startDate: newEventData.startDate || new Date().toISOString().slice(0, 16),
       endDate: newEventData.endDate || new Date(Date.now() + 86400000).toISOString().slice(0, 16),
+      liveStartDate: newEventData.liveStartDate || newEventData.startDate || new Date().toISOString().slice(0, 16),
+      liveEndDate: newEventData.liveEndDate || newEventData.endDate || new Date(Date.now() + 86400000).toISOString().slice(0, 16),
       status: newEventData.status || 'UPCOMING',
       maxNumbers: 1000,
       autoStart: false,

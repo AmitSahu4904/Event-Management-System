@@ -1,5 +1,5 @@
-import { storageAdapter } from './storageAdapter';
-import { eventStorage } from './eventStorage';
+import { storageAdapter } from '@/shared/utils/storageAdapter';
+import { eventStorage } from '@/features/event/services/eventStorage';
 
 const PREFIX = 'dei_v3_winners_';
 
