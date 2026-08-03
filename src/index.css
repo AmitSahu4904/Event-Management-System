@@ -2,6 +2,12 @@
 @import "tailwindcss";
 
 @layer base {
+  :root {
+    --color-brand-blue: #1565c0;
+    --color-brand-lime: #84cc16;
+    --color-brand-navy: #0f172a;
+  }
+
   body {
     font-family: 'Outfit', 'Poppins', sans-serif;
     background-color: #f8fafc;
@@ -10,6 +16,14 @@
     transition: background-color 0.3s ease, color 0.3s ease;
   }
 }
+
+.bg-brand-blue { background-color: #1565c0 !important; }
+.text-brand-blue { color: #1565c0 !important; }
+.border-brand-blue { border-color: #1565c0 !important; }
+
+.bg-brand-lime { background-color: #84cc16 !important; }
+.text-brand-lime { color: #84cc16 !important; }
+.border-brand-lime { border-color: #84cc16 !important; }
 
 /* ==========================================
    DYNAMIC APPLICATION THEMES
@@ -35,8 +49,7 @@ html[data-theme="dark"] .bg-white, html.dark .bg-white {
 }
 
 html[data-theme="dark"] .text-slate-800, html.dark .text-slate-800,
-html[data-theme="dark"] .text-slate-900, html.dark .text-slate-900,
-html[data-theme="dark"] .text-blue-900, html.dark .text-blue-900 {
+html[data-theme="dark"] .text-slate-900, html.dark .text-slate-900 {
   color: #ffffff !important;
 }
 

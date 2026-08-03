@@ -1,4 +1,4 @@
-import { INITIAL_EVENT_DATA, DUMMY_REGISTRATIONS } from '../utils/dummyData';
+import { INITIAL_EVENT_DATA, DUMMY_REGISTRATIONS } from '@/data/dummyData';
 
 const KEYS = {
   EVENT_DATA: 'dei_event_data',

@@ -1,8 +1,8 @@
 import React from 'react';
-import { useEvent } from '../../../context/EventContext';
+import { useEvent } from '@/context/EventContext';
 import { History, Download, Trophy } from 'lucide-react';
-import { formatDateTime } from '../../../utils/formatters';
-import { exportToCSV, exportToExcel, exportToPDF } from '../../../utils/exportUtils';
+import { formatDateTime } from '@/shared/utils/formatters';
+import { exportToCSV, exportToExcel, exportToPDF } from '@/shared/utils/exportUtils';
 
 export const WinnerHistoryPage = () => {
   const { winners } = useEvent();

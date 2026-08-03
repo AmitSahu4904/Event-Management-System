@@ -1,11 +1,11 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useEvent } from '../../../context/EventContext';
+import { useEvent } from '@/context/EventContext';
 import { useAuthStore } from '../../auth/authStore';
 import { Ticket, Trophy, ArrowRight, Sparkles, Award } from 'lucide-react';
-import { ROUTES } from '../../../shared/constants/routes';
-import { LiveBadge } from '../../../components/common/LiveBadge';
-import { CountdownTimer } from '../../../components/common/CountdownTimer';
+import { ROUTES } from '@/shared/constants/routes';
+import { LiveBadge } from '@/shared/components/LiveBadge';
+import { CountdownTimer } from '@/shared/components/CountdownTimer';
 
 export const UserDashboardPage = () => {
   const navigate = useNavigate();

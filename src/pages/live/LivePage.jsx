@@ -1,15 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { useEvent } from '../../context/EventContext';
-import { FlipClock } from '../../components/ui/FlipClock';
-import { PrizeCard } from '../../components/ui/PrizeCard';
-import { Clock, Trophy, PartyPopper, Award, Users, CheckCircle2, Gift, Lock } from 'lucide-react';
-import { CountdownTimer } from '../../components/common/CountdownTimer';
+import { useEvent } from '@/context/EventContext';
+import { FlipClock } from '@/features/draw/components/FlipClock';
+import { PrizeCard } from '@/features/prizes/components/PrizeCard';
+import { WheelSpinner } from '@/features/draw/components/WheelSpinner';
+import { Clock, Trophy, PartyPopper, Award, Users, CheckCircle2, Gift, Lock, Sparkles } from 'lucide-react';
+import { CountdownTimer } from '@/shared/components/CountdownTimer';
 import { motion, AnimatePresence } from 'framer-motion';
 import confetti from 'canvas-confetti';
-import { formatDateTime } from '../../utils/formatters';
+import { formatDateTime } from '@/shared/utils/formatters';
+import { winnerStorage } from '@/features/winners/services/winnerStorage';
+import { CompanyLogo } from '@/shared/components/CompanyLogo';
 
 export const LivePage = () => {
-  const { eventsList, activeEventId, eventData, realParticipantCount, prizes, winners } = useEvent();
+  const { eventsList, activeEventId, eventData, registrations, realParticipantCount, prizes, winners } = useEvent();
   
   // Resolve current active event details
   const currentEvent = eventData?.name 
@@ -33,16 +36,34 @@ export const LivePage = () => {
   const isDuringEvent = currentTime >= start && currentTime <= end;
   const isAfterEnd = currentTime > end;
 
-  // Active published winners list (only available after event end)
-  const activeWinners = isAfterEnd ? winners : [];
+  // Active published winners list
+  const activeWinners = winners || [];
 
   const [selectedRank, setSelectedRank] = useState(1);
 
-  // Active winner for selected rank (only after event end)
+  // Active winner for selected rank
   const activeWinner = activeWinners.find(w => w.rank === selectedRank);
-  const activePrize = prizes.find(p => p.rank === selectedRank);
+  const activePrize = prizes.find(p => p.rank === selectedRank) || prizes[selectedRank - 1];
 
-  const invoiceNumber = (isAfterEnd && activeWinner?.invoiceNo) ? activeWinner.invoiceNo : "000";
+  const invoiceNumber = activeWinner?.invoiceNo ? activeWinner.invoiceNo : "000";
+
+  const handleSpinWinner = (winnerParticipant) => {
+    if (!winnerParticipant) return;
+    const newWinnerEntry = {
+      rank: selectedRank,
+      prizeName: activePrize?.name || `Rank ${selectedRank} Reward`,
+      invoiceNo: winnerParticipant.invoiceNo,
+      name: winnerParticipant.name,
+      phone: winnerParticipant.phone,
+      participantIds: [winnerParticipant.id],
+      participantsCount: 1,
+      drawTime: new Date().toISOString(),
+      published: true
+    };
+
+    const updated = winnerStorage.publishWinners(activeEventId, [...winners.filter(w => w.rank !== selectedRank), newWinnerEntry]);
+    window.location.reload(); // Refresh context
+  };
   const drawTime = activeWinner?.drawTime ? formatDateTime(activeWinner.drawTime) : formatDateTime(end.toISOString());
 
   // Fire confetti only when event has ended and winners are displayed
@@ -95,11 +116,12 @@ export const LivePage = () => {
             </div>
           </div>
 
-          <div className="flex flex-col items-center gap-1">
-            <div className="flex items-center gap-3">
-              <div className="h-0.5 w-12 bg-gradient-to-r from-transparent to-blue-900 hidden sm:block"></div>
+          <div className="flex flex-col items-center gap-1.5">
+            <CompanyLogo size="md" />
+            <div className="flex items-center gap-3 mt-1">
+              <div className="h-0.5 w-8 bg-gradient-to-r from-transparent to-blue-900 hidden sm:block"></div>
               <h1 className="text-xl md:text-2xl font-black text-blue-900 tracking-wider uppercase text-center">{eventName}</h1>
-              <div className="h-0.5 w-12 bg-gradient-to-l from-transparent to-blue-900 hidden sm:block"></div>
+              <div className="h-0.5 w-8 bg-gradient-to-l from-transparent to-blue-900 hidden sm:block"></div>
             </div>
             {currentEvent?.sponsor && (
               <span className="text-xs font-bold text-slate-500">Sponsored by: <strong className="text-blue-900">{currentEvent.sponsor}</strong></span>
@@ -147,7 +169,7 @@ export const LivePage = () => {
 
         {/* Rank Selection Tabs */}
         <div className="flex flex-wrap justify-center gap-2">
-          {Array.from({ length: 5 }, (_, i) => i + 1).map(rank => {
+          {Array.from({ length: prizes && prizes.length > 0 ? prizes.length : 5 }, (_, i) => i + 1).map(rank => {
             const rankWinner = isAfterEnd ? activeWinners.find(w => w.rank === rank) : null;
             const rankPrize = prizes.find(p => p.rank === rank);
 
@@ -186,24 +208,37 @@ export const LivePage = () => {
               transition={{ duration: 0.3 }}
               className="space-y-6"
             >
-              {/* STAGE CENTER: Show Countdown if Event NOT Ended; Show FlipClock if Event Ended */}
-              {!isAfterEnd ? (
+              {/* STAGE CENTER: WheelSpinner during Live Duration; Countdown before start; FlipClock after end */}
+              {isDuringEvent ? (
+                <div className="bg-gradient-to-br from-blue-950 via-slate-900 to-blue-900 text-white rounded-3xl p-6 sm:p-8 border-4 border-blue-800/50 shadow-2xl flex flex-col items-center text-center space-y-4">
+                  <div className="inline-flex items-center gap-2 bg-amber-400/20 text-amber-300 px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest border border-amber-400/30">
+                    <Sparkles size={16} className="text-amber-400" /> LIVE REWARD SPINNER
+                  </div>
+
+                  <WheelSpinner 
+                    participants={registrations}
+                    activeRank={selectedRank}
+                    prizeName={activePrize?.name || `Rank ${selectedRank} Reward`}
+                    existingWinners={winners}
+                    onSpinEnd={handleSpinWinner}
+                  />
+                </div>
+              ) : isBeforeStart ? (
                 <div className="bg-gradient-to-br from-blue-950 via-slate-900 to-blue-900 text-white rounded-3xl p-8 border-4 border-blue-800/50 shadow-2xl flex flex-col items-center text-center space-y-4">
                   <div className="inline-flex items-center gap-2 bg-amber-400/20 text-amber-300 px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest border border-amber-400/30">
-                    <Clock size={16} /> Live Draw Countdown
+                    <Clock size={16} /> Registration Window Open
                   </div>
 
                   <h3 className="text-sm sm:text-base font-extrabold text-blue-200 uppercase tracking-wider">
-                    {isBeforeStart ? "Event Starts In" : "Official Draw Ends In"}
+                    Official Live Draw Starts In
                   </h3>
 
-                  {/* Big Hero Countdown Display */}
                   <div className="py-2">
-                    <CountdownTimer targetDate={(isBeforeStart ? start : end).toISOString()} />
+                    <CountdownTimer targetDate={start.toISOString()} size="large" />
                   </div>
 
                   <p className="text-xs text-slate-300 font-medium max-w-md">
-                    Winning invoice numbers and official winner names will be revealed here immediately after the event ends at <strong className="text-white">{end.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</strong>.
+                    Client registrations are being collected. The interactive wheel spinner will be enabled when live duration starts at <strong className="text-white">{start.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</strong>.
                   </p>
                 </div>
               ) : (

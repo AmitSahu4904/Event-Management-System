@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { eventStorage } from '../../services/eventStorage';
+import { eventStorage } from '@/features/event/services/eventStorage';
 
 export const useEventStore = create((set, get) => ({
   event: eventStorage.getEvent(),

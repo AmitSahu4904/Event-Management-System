@@ -1,6 +1,6 @@
-import { storageAdapter, sessionStorageAdapter } from './storageAdapter';
-import { formatInvoiceNo } from '../utils/formatters';
-import { eventStorage } from './eventStorage';
+import { storageAdapter, sessionStorageAdapter } from '@/shared/utils/storageAdapter';
+import { formatInvoiceNo } from '@/shared/utils/formatters';
+import { eventStorage } from '@/features/event/services/eventStorage';
 
 const PREFIX = 'dei_v3_participants_';
 const TICKET_PREFIX = 'dei_v3_user_ticket_';

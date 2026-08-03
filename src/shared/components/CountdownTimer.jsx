@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Clock } from 'lucide-react';
-import { parseEventDate } from '../../utils/formatters';
+import { parseEventDate } from '@/shared/utils/formatters';
 
 export const CountdownTimer = ({ targetDate, startDate, size = 'small' }) => {
   const [timeLeft, setTimeLeft] = useState({ hours: 0, minutes: 0, seconds: 0, status: 'LIVE' });

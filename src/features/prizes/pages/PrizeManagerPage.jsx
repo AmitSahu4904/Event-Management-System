@@ -30,10 +30,10 @@ export const PrizeManagerPage = () => {
       {/* Page Header */}
       <div>
         <h1 className="text-2xl font-black text-blue-900 flex items-center gap-2">
-          <Gift size={26} className="text-blue-600" /> Prize Manager (5 Ranks)
+          <Gift size={26} className="text-blue-600" /> Prize Manager ({prizes?.length || 5} Ranks)
         </h1>
         <p className="text-xs font-semibold text-slate-500 mt-1">
-          Set up prize names and upload images for Rank 1 (Highest) through Rank 5 (Lowest).
+          Set up prize names and upload images for Rank 1 (Highest) through Rank {prizes?.length || 5} (Lowest).
         </p>
       </div>
 

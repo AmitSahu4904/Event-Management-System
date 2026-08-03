@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Users, Download, Search, FileText, Table as TableIcon } from 'lucide-react';
-import { formatDateTime } from '../../utils/formatters';
-import { exportToCSV, exportToExcel, exportToPDF } from '../../utils/exportUtils';
-import { Button } from '../../shared/components/Button';
+import { formatDateTime } from '@/shared/utils/formatters';
+import { exportToCSV, exportToExcel, exportToPDF } from '@/shared/utils/exportUtils';
+import { Button } from '@/shared/components/Button';
 
 export const ParticipantRosterSection = ({ registrations = [], winnerHistory = [] }) => {
   const [searchTerm, setSearchTerm] = useState('');
